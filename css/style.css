@@ -4,3 +4,5 @@ footer {
 	width: 800px;
 	margin:0 auto;
 }
+
+label,input,textarea {display:block;}
