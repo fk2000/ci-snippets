@@ -46,7 +46,9 @@ class Edit extends CI_Controller
 		if($this->form_validation->run() === TRUE)
 		{
 			// 確認ページ
+			$this->load->view("header_view");
 			$this->load->view('edit_confirm_view');
+			$this->load->view("footer_view");
 		}
 		else
 		{
@@ -61,9 +63,9 @@ class Edit extends CI_Controller
 
 	}
 
-	function update()
+	function complete()
 	{
-
+		var_dump($_POST);
 	}
 }
 
