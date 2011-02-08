@@ -28,7 +28,10 @@ class Edit extends CI_Controller
 		$this->ticket = md5(uniqid(mt_rand(), TRUE));
 		$this->session->set_userdata("ticket", $this->ticket);
 
+		$this->load->view("header_view");
 		$this->load->view('edit_view', $data);
+		$this->load->view('footer_view');
+
 	}
 
 	function confirm()
@@ -50,7 +53,10 @@ class Edit extends CI_Controller
 			$data["code_type_options"]  = $this->config->item("code_type_options");
 			$data["code_type_selected"] = $this->input->post("code_type");
 
+			$this->load->view('header_view');
 			$this->load->view("edit_view", $data);
+			$this->load->view('footer_view');
+
 		}
 
 	}
