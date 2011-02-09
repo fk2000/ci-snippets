@@ -9,34 +9,55 @@ class Snippets_model extends CI_Model
 
 	function Insert($title, $code_type, $code)
 	{
-		$sql = "INSERT INTO sn_snippets(title, code_type, code) VALUES(?, ?, ?)";
+		if($title === "" || $code_type === "" || $code === "")
+		{
+			return FALSE;
+		}
+
+		$sql = "INSERT INTO sn_snippets(title, code_type, code, created) VALUES(?, ?, ?, NOW())";
 		return $this->db->query($sql, array($title, $code_type, $code));
 	}
 
 	function update($id,$title,$code_type,$code)
 	{
+		if(is_int($id) === FALSE || $title === "" || $code === "" || $code_type === "")
+		{
+			return FALSE;
+		}
+
 		$sql = "UPDATE sn_snippets SET title = ?, code_type = ?, code = ?, updated = NOW() WHERE id = ?";
 		return $this->db->query($sql, array($title, $code_type, $code, $id));
 	}
 
 	function delete($id)
 	{
+		if(!is_int($id))
+		{
+			return FALSE;
+		}
+
 		//論理削除
 		$sql = "UPDATE sn_snippets SET invalid = 1, updated = NOW() WHERE id = ?";
 		return $this->db->query($sql, $id);
 	}
 
-	function select()
+	function select($display = 5, $invalid = 0)
 	{
-		$sql = "SLECT id, title, code_type, code FROM sn_snippets WHERE invalid = 0 ORDER BY ASC LIMIT 5";
-		$query = $this->db->query($sql);
+		if(!is_int($display) || !is_int($invalid))
+		{
+			return NULL;
+		}
+
+		$sql = "SELECT id, title, code_type, code FROM sn_snippets WHERE invalid = ? LIMIT ?";
+		$query = $this->db->query($sql, array($invalid, $display));
 
 		if($query->num_rows() > 0)
 		{
 			foreach($query->result_array() as $row)
 			{
-				$result = array($row);
+				$result[] = $row;
 			}
+				return $result;
 		}
 		else
 		{
@@ -46,11 +67,16 @@ class Snippets_model extends CI_Model
 
 	function select_one($id)
 	{
+		if(!is_int($id))
+		{
+			return NULL;
+		}
+
 		$sql = "SELECT title, code_type, code FROM sn_snippets WHERE id=? AND invalid = 0";
 		$query = $this->db->query($sql, array($id));
 
-		if($query->num_row() > 0){
-			return $query->row;
+		if($query->num_rows() > 0){
+			return $query->row_array();
 		}
 		else
 		{

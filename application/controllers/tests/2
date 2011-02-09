@@ -1,0 +1,50 @@
+<?php
+class Snippets_model_tests extends CI_Controller
+{
+	function __construct()
+	{
+		parent::__construct();
+		$this->load->library('unit_test');
+		$this->unit->use_strict(TRUE);
+
+		$this->load->model("snippets_model");
+
+		// sample data
+		$this->data = array("id" => 10, "title" => "sample code from tests", "code_type" => "php", "code" => "// test");
+	}
+
+	function index()
+	{
+		echo "test file";
+	}
+	function insert()
+	{
+		$test     = $this->snippets_model->insert($this->data["title"], $this->data["code_type"], $this->data["code"]);
+		$expected = TRUE;
+		$name     = "Insert Test::TRUE";
+
+		// Insert Test::TRUE
+		$this->unit->run($test, $expected, $name);
+
+		$test2 = $this->snippets_model->insert("", $this->data["code_type"], $this->data["code"]);
+		$this->unit->run($test2, TRUE, "Insert Test::titleBrank");
+
+		$test3 = $this->snippets_model->insert($this->data["title"], $this->data["code_type"], "");
+		$this->unit->run($test3, TRUE, "Insert Test::codeBrank");
+
+		$test4 = $this->snippets_model->insert($this->data["title"], $this->data["code_type"], "");
+		$this->unit->run($test4, TRUE, "Insert Test::title_codeBrank");
+
+		echo $this->unit->report();
+	}
+
+	function update()
+	{
+		$test = $this->snippets_model->update("change", "// testしてみました。update実行", "php", 10);
+		$this->unit->run($test, TRUE, "update");
+
+		echo $this->unit->report();
+
+	}
+}
+

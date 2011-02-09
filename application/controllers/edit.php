@@ -5,11 +5,11 @@ class Edit extends CI_Controller
 	{
 		parent::__construct();
 
-		// Load Library and helper
+		// ライブラリ、ヘルパーのload
 		$this->load->library(array("session", "form_validation"));
 		$this->load->helper("form");
 
-		// load original config
+		// form関連設定ファイルのload
 		$this->config->load("form_data");
 
 		// form_validation
@@ -20,14 +20,15 @@ class Edit extends CI_Controller
 
 	function index()
 	{
-		// form settings
+		//言語選択ドロップダウン情報を設定ファイルから取得
 		$data["code_type_options"]  = $this->config->item("code_type_options");
 		$data["code_type_selected"] = $this->config->item("code_type_selected");
 
-		// one time ticket
+		// ワンタイムチケット発行
 		$this->ticket = md5(uniqid(mt_rand(), TRUE));
 		$this->session->set_userdata("ticket", $this->ticket);
 
+		// 各viewを表示
 		$this->load->view("header_view");
 		$this->load->view('edit_view', $data);
 		$this->load->view('footer_view');
@@ -36,6 +37,7 @@ class Edit extends CI_Controller
 
 	function confirm()
 	{
+		// ワンタイムチケット照合
 		$this->ticket = $this->input->post("ticket");
 		if(!isset($this->ticket) OR $this->ticket !== $this->session->userdata("ticket"))
 		{
@@ -45,16 +47,19 @@ class Edit extends CI_Controller
 
 		if($this->form_validation->run() === TRUE)
 		{
-			// 確認ページ
+			// confirmページを表示
 			$this->load->view("header_view");
 			$this->load->view('edit_confirm_view');
 			$this->load->view("footer_view");
 		}
 		else
 		{
+			// 言語選択ドロップダウン情報を再取得
 			$data["code_type_options"]  = $this->config->item("code_type_options");
+			// optionのselectedの状態は$)POSTより設定
 			$data["code_type_selected"] = $this->input->post("code_type");
 
+			// editページを再表示
 			$this->load->view('header_view');
 			$this->load->view("edit_view", $data);
 			$this->load->view('footer_view');
