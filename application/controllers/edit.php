@@ -47,9 +47,11 @@ class Edit extends CI_Controller
 
 		if($this->form_validation->run() === TRUE)
 		{
+			// 同一のset_value()を複数回呼び出した場合の対応
+			$data["code_type"] = set_value("code_type");
 			// confirmページを表示
 			$this->load->view("header_view");
-			$this->load->view('edit_confirm_view');
+			$this->load->view('edit_confirm_view', $data);
 			$this->load->view("footer_view");
 		}
 		else
