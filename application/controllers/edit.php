@@ -70,7 +70,28 @@ class Edit extends CI_Controller
 
 	function complete()
 	{
-		var_dump($_POST);
+		$this->load->model("snippets_model");
+		// $this->load->database();
+
+		if($this->snippets_model->insert($this->input->post("title"),$this->input->post("code_type"), $this->input->post("code")))
+		{
+			$data["title"]     = "Edit Completed!!";
+			$data["paragraph"] = "新しいスニペットの登録が完了しました。";
+
+			// completeページ表示
+			$this->load->view("header_view");
+			$this->load->view("edit_complete_view", $data);
+			$this->load->view("footer_view");
+		}
+		else
+		{
+			$data["title"]     = "Edit Error!!";
+			$data["paragraph"] = "エラーが発生しました。再度登録し直してください。";
+
+			$this->load->view("header_view");
+			$this->load->view("edit_complete_view", $data);
+			$this->load->view("footer_view");
+		}
 	}
 }
 
