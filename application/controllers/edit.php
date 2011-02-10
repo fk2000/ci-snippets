@@ -70,6 +70,14 @@ class Edit extends CI_Controller
 
 	function complete()
 	{
+
+		$this->ticket = $this->input->post("ticket");
+		if(!isset($this->ticket) OR $this->ticket !== $this->session->userdata("ticket"))
+		{
+			echo "cookieを有効にしてください。cookieが有効な場合には不正な操作が行われました。";
+			exit;
+		}
+
 		$this->load->model("snippets_model");
 		// $this->load->database();
 
