@@ -20,13 +20,26 @@ class Edit extends CI_Controller
 
 	function index()
 	{
+
 		//言語選択ドロップダウン情報を設定ファイルから取得
 		$data["code_type_options"]  = $this->config->item("code_type_options");
-		$data["code_type_selected"] = $this->config->item("code_type_selected");
 
-		// ワンタイムチケット発行
-		$this->ticket = md5(uniqid(mt_rand(), TRUE));
-		$this->session->set_userdata("ticket", $this->ticket);
+		$referer = (array_key_exists("HTTP_REFERER", $_SERVER)) ? $_SERVER["HTTP_REFERER"]  : "" ;
+		// confirmページからの遷移ではない場合
+		if($referer !== base_url() . "edit/confirm")
+		{
+				// ワンタイムチケット発行
+			$this->ticket = md5(uniqid(mt_rand(), TRUE));
+			$this->session->set_userdata("ticket", $this->ticket);
+			$data["code_type_selected"] = $this->config->item("code_type_selected");
+		}
+		else // confirmページからの遷移の場合
+		{
+			// form_validationを走らせてset_value()の値を引き継がす
+			$this->form_validation->run();
+			$this->ticket = $this->input->post("ticket");
+			$data["code_type_selected"] = set_value("code_type_options");
+		}
 
 		// 各viewを表示
 		$this->load->view("header_view");
@@ -58,7 +71,6 @@ class Edit extends CI_Controller
 		{
 			// 言語選択ドロップダウン情報を再取得
 			$data["code_type_options"]  = $this->config->item("code_type_options");
-			// optionのselectedの状態は$)POSTより設定
 			$data["code_type_selected"] = set_value("code_type");
 
 			// editページを再表示
