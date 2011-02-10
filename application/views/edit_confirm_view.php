@@ -14,6 +14,7 @@
 		form_hidden("title", set_value("title")),
 		form_hidden("code_type", set_value("code_type")),
 		form_hidden("code", set_value("code")),
+		form_hidden("ticket", $this->ticket),
 		form_submit("complete", "修正"),
 		form_close();?>
 

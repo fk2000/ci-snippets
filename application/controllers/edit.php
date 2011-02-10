@@ -57,7 +57,7 @@ class Edit extends CI_Controller
 			// 言語選択ドロップダウン情報を再取得
 			$data["code_type_options"]  = $this->config->item("code_type_options");
 			// optionのselectedの状態は$)POSTより設定
-			$data["code_type_selected"] = $this->input->post("code_type");
+			$data["code_type_selected"] = set_value("code_type");
 
 			// editページを再表示
 			$this->load->view('header_view');
