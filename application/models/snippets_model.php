@@ -41,15 +41,15 @@ class Snippets_model extends CI_Model
 		return $this->db->query($sql, $id);
 	}
 
-	function select($display = 5, $invalid = 0)
+	function select($display = 5, $page = 0, $invalid = 0)
 	{
 		if(!is_int($display) || !is_int($invalid))
 		{
 			return NULL;
 		}
 
-		$sql = "SELECT id, title, code_type, code FROM sn_snippets WHERE invalid = ? LIMIT ?";
-		$query = $this->db->query($sql, array($invalid, $display));
+		$sql = "SELECT id, title, code_type, code FROM sn_snippets WHERE invalid = ? ORDER BY updated DESC,  created DESC LIMIT ?, ?";
+		$query = $this->db->query($sql, array($invalid, $page, $display));
 
 		if($query->num_rows() > 0)
 		{
@@ -82,6 +82,14 @@ class Snippets_model extends CI_Model
 		{
 			return NULL;
 		}
+	}
+
+	function get_num_rows()
+	{
+		$sql   = "SELECT id FROM sn_snippets";
+		$count = $this->db->query($sql);
+
+		return $count->num_rows();
 	}
 }
 
