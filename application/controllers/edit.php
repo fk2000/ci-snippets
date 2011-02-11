@@ -12,7 +12,7 @@ class Edit extends CI_Controller
 		// form関連設定ファイルのload
 		$this->config->load("form_data");
 
-		// form_validation
+		// form_validationのルールを設定
 		$this->form_validation->set_rules("title", "タイトル", "trim|required|xss_clean|strip_tags");
 		$this->form_validation->set_rules("code_type", "言語", "required|xss_clean");
 		$this->form_validation->set_rules("code", "コード", "trim|required");
@@ -21,23 +21,27 @@ class Edit extends CI_Controller
 	function index()
 	{
 
-		//言語選択ドロップダウン情報を設定ファイルから取得
+		//言語選択ドロップダウン情報を取得
 		$data["code_type_options"]  = $this->config->item("code_type_options");
 
 		$referer = (array_key_exists("HTTP_REFERER", $_SERVER)) ? $_SERVER["HTTP_REFERER"]  : "" ;
-		// confirmページからの遷移ではない場合
+
+		// リファラーがconfirmページからのものかで分岐
 		if($referer !== base_url() . "edit/confirm")
 		{
-				// ワンタイムチケット発行
 			$this->ticket = md5(uniqid(mt_rand(), TRUE));
 			$this->session->set_userdata("ticket", $this->ticket);
+
+			// code_typeの設定状態を初期値へ
 			$data["code_type_selected"] = $this->config->item("code_type_selected");
 		}
 		else // confirmページからの遷移の場合
 		{
 			// form_validationを走らせてset_value()の値を引き継がす
 			$this->form_validation->run();
+
 			$this->ticket = $this->input->post("ticket");
+			// code_typeの設定状態を引継ぐ
 			$data["code_type_selected"] = set_value("code_type_options");
 		}
 
@@ -84,13 +88,8 @@ class Edit extends CI_Controller
 
 	function complete()
 	{
-
-		$this->ticket = $this->input->post("ticket");
-		if(!isset($this->ticket) OR $this->ticket !== $this->session->userdata("ticket"))
-		{
-			echo "cookieを有効にしてください。cookieが有効な場合には不正な操作が行われました。";
-			exit;
-		}
+		// ticketをチェックし不正な場合には処理中止
+		$this->_ticket_check($this->input->post("ticket"));
 
 		$this->load->model("snippets_model");
 		// $this->load->database();
@@ -99,22 +98,30 @@ class Edit extends CI_Controller
 		{
 			$data["title"]     = "Edit Completed!!";
 			$data["paragraph"] = "新しいスニペットの登録が完了しました。";
-
-			// completeページ表示
-			$this->load->view("header_view");
-			$this->load->view("edit_complete_view", $data);
-			$this->load->view("footer_view");
 		}
 		else
 		{
 			$data["title"]     = "Edit Error!!";
 			$data["paragraph"] = "エラーが発生しました。再度登録し直してください。";
-
-			$this->load->view("header_view");
-			$this->load->view("edit_complete_view", $data);
-			$this->load->view("footer_view");
 		}
+
+		// completeページ表示
+		$this->load->view("header_view");
+		$this->load->view("edit_complete_view", $data);
+		$this->load->view("footer_view");
+
 	}
+
+	function _ticket_check($ticket)
+	{
+		if(!isset($ticket) || $ticket !== $this->session->userdata("ticket"))
+		{
+			echo "cookieを有効にしてください。cookieが有効な場合には不正な操作が行われました。";
+			exit;
+		}
+		return;
+	}
+
 }
 
 /* End of file edit.php */
