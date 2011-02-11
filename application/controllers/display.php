@@ -1,5 +1,5 @@
 <?php
-class Snippets extends CI_Controller
+class Display extends CI_Controller
 {
 	function __construct()
 	{
@@ -12,7 +12,7 @@ class Snippets extends CI_Controller
 		$this->load->library("pagination");
 
 		// page
-		$config["base_url"]   = base_url() . "/snippets/index";
+		$config["base_url"]   = base_url() . "/display/index";
 		$config["total_rows"] = (int)$this->snippets_model->get_num_rows();
 		$config["per_page"]   = 10;
 		$this->pagination->initialize($config);
@@ -21,7 +21,7 @@ class Snippets extends CI_Controller
 		$data["pager"] = $this->pagination->create_links();
 
 		$this->load->view("header_view");
-		$this->load->view('snippets_view', $data);
+		$this->load->view('display_view', $data);
 		$this->load->view("footer_view");
 	}
 
@@ -32,7 +32,7 @@ class Snippets extends CI_Controller
 		if($data["code"] !== NULL)
 		{
 			$this->load->view("header_view");
-			$this->load->view("snippets_code_view", $data);
+			$this->load->view("display_code_view", $data);
 			$this->load->view("footer_view");
 		}
 		else
