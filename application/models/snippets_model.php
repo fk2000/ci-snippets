@@ -1,4 +1,16 @@
 <?php
+/**
+ * ci-snippets model
+ * スニペット編集用model
+ *
+ * @package		ci-snippets
+ * @author		Yuya Terajima/e2esound.com
+ * @copyright	Copyright (c) 2011 Yuya Terajima/e2esound.com
+ * @license		MTI License?
+ * @link		http://www.e2esound.com/
+ * @since		Version 0.1β
+ */
+
 class Snippets_model extends CI_Model
 {
 	function __construct()
@@ -7,6 +19,14 @@ class Snippets_model extends CI_Model
 		$this->load->database();
 	}
 
+/**
+ * insert method
+ * データinsertメソッド
+ *
+ * @package		ci-snippets
+ * @category	Model
+ * @author	  Yuya Terajima/e2esound.com
+ */
 	function Insert($title, $code_type, $code)
 	{
 		if(empty($title) || empty($code_type) || empty($code))
@@ -21,6 +41,15 @@ class Snippets_model extends CI_Model
 		return $this->db->query($sql, array($title, $code_type, $code));
 	}
 
+/**
+ * update method
+ * データ更新メソッド
+ * // 今回は使いません
+ *
+ * @package		ci-snippets
+ * @category	Model
+ * @author	  Yuya Terajima/e2esound.com
+ */
 	function update($id,$title,$code_type,$code)
 	{
 		if(!is_int($id) || empty($title) || empty($code) || empty($code_type))
@@ -40,6 +69,17 @@ class Snippets_model extends CI_Model
 		return $this->db->query($sql, array($title, $code_type, $code, $id));
 	}
 
+
+/**
+ * delete method
+ * データ論理削除メソッド
+ *
+ * invalid = 1へupdateし、削除状態に
+ *
+ * @package		ci-snippets
+ * @category	Model
+ * @author	  Yuya Terajima/e2esound.com
+ */
 	function delete($id)
 	{
 		if(!is_int($id))
@@ -58,6 +98,14 @@ class Snippets_model extends CI_Model
 		return $this->db->query($sql, $id);
 	}
 
+/**
+ * select method
+ * データ一覧表示メソッド
+ *
+ * @package		ci-snippets
+ * @category	Model
+ * @author	  Yuya Terajima/e2esound.com
+ */
 	function select($display = 5, $page = 0, $invalid = 0)
 	{
 		if(!is_int($display)
@@ -107,6 +155,16 @@ class Snippets_model extends CI_Model
 		}
 	}
 
+/**
+ * select_one method
+ * 単独ページ用表示メソッド
+ *
+ * idによってスニッペトを表示
+ *
+ * @package		ci-snippets
+ * @category	Model
+ * @author	  Yuya Terajima/e2esound.com
+ */
 	function select_one($id)
 	{
 		if(!is_int($id))
@@ -134,6 +192,15 @@ class Snippets_model extends CI_Model
 		}
 	}
 
+/**
+ * get_num_rows method
+ * 有効スニペット数取得関数
+ *
+ *
+ * @package		ci-snippets
+ * @category	Model
+ * @author	  Yuya Terajima/e2esound.com
+ */
 	function get_num_rows($invalid = 0)
 	{
 		if(!is_int($invalid) || $invalid < 0 || $invalid > 1)

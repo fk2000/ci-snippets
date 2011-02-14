@@ -1,4 +1,16 @@
 <?php
+/**
+ * ci-snippets display controller
+ * スニペット表示コントローラ
+ *
+ * @package		ci-snippets
+ * @author		Yuya Terajima/e2esound.com
+ * @copyright	Copyright (c) 2011 Yuya Terajima/e2esound.com
+ * @license		MTI License?
+ * @link		http://www.e2esound.com/
+ * @since		Version 0.1β
+ */
+
 class Display extends CI_Controller
 {
 	function __construct()
@@ -8,6 +20,14 @@ class Display extends CI_Controller
 		$this->load->helper("code_type");
 	}
 
+/**
+ * Index method
+ * スニペット一覧を表示
+ *
+ * @package		ci-snippets
+ * @category	Controller
+ * @author	  Yuya Terajima/e2esound.com
+ */
 	function index($page = 0)
 	{
 		$this->load->library("pagination");
@@ -29,6 +49,14 @@ class Display extends CI_Controller
 		$this->load->view("footer_view");
 	}
 
+/**
+ * code method
+ * スニペット単独ページの表示
+ *
+ * @package		ci-snippets
+ * @category	Controller
+ * @author	  Yuya Terajima/e2esound.com
+ */
 	function code($id)
 	{
 		$this->load->helper("form");
@@ -49,5 +77,5 @@ class Display extends CI_Controller
 
 }
 
-/* End of file snippets.php */
-/* Location: ./system/application/controllers/snippets.php */
+/* End of file display.php */
+/* Location: /application/controllers/display.php */

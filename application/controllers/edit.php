@@ -1,4 +1,16 @@
 <?php
+/**
+ * ci-snippets edit controller
+ * スニペット編集コントローラ
+ *
+ * @package		ci-snippets
+ * @author		Yuya Terajima/e2esound.com
+ * @copyright	Copyright (c) 2011 Yuya Terajima/e2esound.com
+ * @license		MTI License?
+ * @link		http://www.e2esound.com/
+ * @since		Version 0.1β
+ */
+
 class Edit extends CI_Controller
 {
 	function __construct()
@@ -18,6 +30,15 @@ class Edit extends CI_Controller
 		$this->form_validation->set_rules("code", "コード", "trim|required");
 	}
 
+/**
+ * Index method
+ * 編集開始ページの表示
+ * 確認ページからの修正
+ *
+ * @package		ci-snippets
+ * @category	Controller
+ * @author	  Yuya Terajima/e2esound.com
+ */
 	function index()
 	{
 
@@ -46,10 +67,19 @@ class Edit extends CI_Controller
 
 	}
 
+/**
+ * confirm method
+ * 入力内容確認ページの表示
+ *
+ * @package		ci-snippets
+ * @category	Controller
+ * @author	  Yuya Terajima/e2esound.com
+ */
 	function confirm()
 	{
 		if(empty($_POST))
 		{
+			// エラーページ表示
 			show_error('The action you have requested is not allowed.');
 		}
 
@@ -60,7 +90,10 @@ class Edit extends CI_Controller
 			// 同一のset_value()を複数回呼び出した場合の対応
 			$data["title"]     = set_value("title");
 			$data["code_type"] = set_value("code_type");
+
+			// 改行コード重複を回避
 			$data["code"]      = str_replace("\r\n\n", "\n", set_value("code"));
+
 			// confirmページを表示
 			$this->load->view("header_view");
 			$this->load->view('edit_confirm_view', $data);
@@ -81,17 +114,31 @@ class Edit extends CI_Controller
 
 	}
 
+/**
+ * complete method
+ * 編集完了ページの表示
+ * dbへのデータinsert
+ *
+ * @package		ci-snippets
+ * @category	Controller
+ * @author	  Yuya Terajima/e2esound.com
+ */
 	function complete()
 	{
 		if(empty($_POST))
 		{
+			// エラーページ表示
 			show_error('The action you have requested is not allowed.');
 		}
 
 		$this->load->model("snippets_model");
-		// $this->load->database();
 
-		if($this->snippets_model->insert($this->input->post("title"),$this->input->post("code_type"), str_replace("\r\n\n", "\n", $this->input->post("code"))))
+		// insert完了時に成功ページを表示
+		if($this->snippets_model->insert(
+																			$this->input->post("title"),
+																			$this->input->post("code_type"),
+																			str_replace("\r\n\n", "\n", $this->input->post("code"))
+																		))
 		{
 			$data["title"]     = "Edit Completed!!";
 			$data["paragraph"] = "新しいスニペットの登録が完了しました。";
@@ -109,16 +156,28 @@ class Edit extends CI_Controller
 
 	}
 
+/**
+ * delete method
+ * スニペット論理削除メソッド
+ *
+ * @package		ci-snippets
+ * @category	Controller
+ * @author	  Yuya Terajima/e2esound.com
+ */
 	function delete()
 	{
 		$this->load->model("snippets_model");
+
+		// 論理削除実行
 		$result = $this->snippets_model->delete((int)$this->input->post("id"));
+
+		// 削除完了時はdisplay/indexへ
 		if($result === TRUE)
 		{
 			header("HTTP/1.1 301 Moved Permanently");
 			header("Location: " . base_url());
 		}
-		else
+		else　// 失敗時はエラーページ表示
 		{
 			show_error("Failure: Could not delete this data");
 		}
@@ -127,4 +186,4 @@ class Edit extends CI_Controller
 }
 
 /* End of file edit.php */
-/* Location: ./application/controllers/edit.php */
+/* Location: /application/controllers/edit.php */
