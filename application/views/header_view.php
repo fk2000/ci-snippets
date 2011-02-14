@@ -14,13 +14,13 @@
 </head>
 
 <body id="PageName">
-	<header>
+	<div id="header">
 	<h1><a href="<?php echo base_url();?>">CI-SNIPPETS</a></h1>
-	<nav>
-	<ul class="clearfix">
-		<li><a href="<?php echo base_url();?>">Top</a></li>
-		<li><a href="<?php echo base_url();?>edit">スニペット追加</a></li>
-		<li>HELP</li>
-	</ul>
-	</nav>
-	</header>
+		<div id="nav">
+			<ul class="clearfix">
+				<li><a href="<?php echo base_url();?>">Top</a></li>
+				<li><a href="<?php echo base_url();?>edit">スニペット追加</a></li>
+				<li>HELP</li>
+			</ul>
+		<!--/#nav--></div>
+	<!--/#header--></div>

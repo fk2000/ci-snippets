@@ -1,6 +1,6 @@
-	<footer>
-
-	</footer>
+	<div id="footer">
+ここも何か書くか・・・
+	<!--/#footer--></div>
 <script type="text/javascript" src="<?php echo base_url();?>js/shCore.js"></script>
 <script src="<?php echo base_url();?>js/shAutoloader.js" type="text/javascript"></script>
 <script type="text/javascript">
