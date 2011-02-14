@@ -14,5 +14,12 @@
 
 <body id="PageName">
 	<header>
-	<h1>CI-SNIPPETS</h1>
+	<h1><a href="<?php echo base_url();?>">CI-SNIPPETS</a></h1>
+	<nav>
+	<ul class="clearfix">
+		<li><a href="<?php echo base_url();?>">Top</a></li>
+		<li><a href="<?php echo base_url();?>edit">スニペット追加</a></li>
+		<li>HELP</li>
+	</ul>
+	</nav>
 	</header>

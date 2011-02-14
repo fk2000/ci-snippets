@@ -65,7 +65,9 @@ class Edit extends CI_Controller
 		if($this->form_validation->run() === TRUE)
 		{
 			// 同一のset_value()を複数回呼び出した場合の対応
+			$data["title"]     = set_value("title");
 			$data["code_type"] = set_value("code_type");
+			$data["code"]      = str_replace("\r\n\n", "\n", set_value("code"));
 			// confirmページを表示
 			$this->load->view("header_view");
 			$this->load->view('edit_confirm_view', $data);
@@ -94,7 +96,7 @@ class Edit extends CI_Controller
 		$this->load->model("snippets_model");
 		// $this->load->database();
 
-		if($this->snippets_model->insert($this->input->post("title"),$this->input->post("code_type"), $this->input->post("code")))
+		if($this->snippets_model->insert($this->input->post("title"),$this->input->post("code_type"), str_replace("\r\n\n", "\n", $this->input->post("code"))))
 		{
 			$data["title"]     = "Edit Completed!!";
 			$data["paragraph"] = "新しいスニペットの登録が完了しました。";

@@ -84,10 +84,10 @@ class Snippets_model extends CI_Model
 		}
 	}
 
-	function get_num_rows()
+	function get_num_rows($invalid = 0)
 	{
-		$sql   = "SELECT id FROM sn_snippets";
-		$count = $this->db->query($sql);
+		$sql   = "SELECT id FROM sn_snippets WHERE invalid = ?";
+		$count = $this->db->query($sql, array($invalid));
 
 		return $count->num_rows();
 	}
