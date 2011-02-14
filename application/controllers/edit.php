@@ -6,7 +6,7 @@ class Edit extends CI_Controller
 		parent::__construct();
 
 		// ライブラリ、ヘルパーのload
-		$this->load->library(array("session", "form_validation"));
+		$this->load->library(array("session", "form_validation","security"));
 		$this->load->helper("form");
 
 		// form関連設定ファイルのload
@@ -27,9 +27,6 @@ class Edit extends CI_Controller
 		// confirmページからPOSTデータがない場合
 		if(empty($_POST))
 		{
-			$this->ticket = md5(uniqid(mt_rand(), TRUE));
-			$this->session->set_userdata("ticket", $this->ticket);
-
 			// code_typeの設定状態を初期値へ
 			$data["code_type_selected"] = $this->config->item("code_type_selected");
 		}
@@ -38,7 +35,6 @@ class Edit extends CI_Controller
 			// form_validationを走らせてset_value()の値を引き継がす
 			$this->form_validation->run();
 
-			$this->ticket = $this->input->post("ticket");
 			// code_typeの設定状態を引継ぐ
 			$data["code_type_selected"] = set_value("code_type_options");
 		}
@@ -52,13 +48,8 @@ class Edit extends CI_Controller
 
 	function confirm()
 	{
-		// ワンタイムチケット照合
-		$this->ticket = $this->input->post("ticket");
-		if(!isset($this->ticket) OR $this->ticket !== $this->session->userdata("ticket"))
-		{
-			echo "cookieを有効にしてください。cookieが有効な場合には不正な操作が行われました。";
-			exit;
-		}
+		var_dump($_POST);
+		// $this->security->csrf_verify();
 
 		$this->load->helper("code_type");
 		if($this->form_validation->run() === TRUE)
@@ -89,8 +80,6 @@ class Edit extends CI_Controller
 
 	function complete()
 	{
-		// ticketをチェックし不正な場合には処理中止
-		$this->_ticket_check($this->input->post("ticket"));
 
 		$this->load->model("snippets_model");
 		// $this->load->database();
@@ -115,7 +104,6 @@ class Edit extends CI_Controller
 
 	function delete()
 	{
-		$this->_ticket_check($this->input->post("ticket"));
 		$this->load->model("snippets_model");
 		$result = $this->snippets_model->delete((int)$this->input->post("id"));
 		if($result === TRUE)
@@ -127,16 +115,6 @@ class Edit extends CI_Controller
 		{
 			echo "削除に失敗しました。";
 		}
-	}
-
-	function _ticket_check($ticket)
-	{
-		if(!isset($ticket) || $ticket !== $this->session->userdata("ticket"))
-		{
-			echo "cookieを有効にしてください。cookieが有効な場合には不正な操作が行われました。";
-			exit;
-		}
-		return;
 	}
 
 }

@@ -6,7 +6,6 @@
 		form_hidden("title", $title),
 		form_hidden("code_type", $code_type),
 		form_hidden("code", $code),
-		form_hidden("ticket", $this->ticket),
 		form_submit("complete", "登録"),
 		form_close();?>
 <?php
@@ -14,7 +13,6 @@
 		form_hidden("title", $title),
 		form_hidden("code_type", $code_type),
 		form_hidden("code", $code),
-		form_hidden("ticket", $this->ticket),
 		form_submit("complete", "修正"),
 		form_close();?>
 
