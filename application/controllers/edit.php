@@ -177,7 +177,7 @@ class Edit extends CI_Controller
 			header("HTTP/1.1 301 Moved Permanently");
 			header("Location: " . base_url());
 		}
-		else　// 失敗時はエラーページ表示
+		else
 		{
 			show_error("Failure: Could not delete this data");
 		}
