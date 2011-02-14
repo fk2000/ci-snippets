@@ -31,7 +31,6 @@ class Display extends CI_Controller
 
 	function code($id)
 	{
-		$this->load->library("session");
 		$this->load->helper("form");
 
 		$data["code"] = $this->snippets_model->select_one((int)$id);

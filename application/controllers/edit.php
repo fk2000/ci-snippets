@@ -6,7 +6,7 @@ class Edit extends CI_Controller
 		parent::__construct();
 
 		// ライブラリ、ヘルパーのload
-		$this->load->library(array("session", "form_validation","security"));
+		$this->load->library(array("form_validation","security"));
 		$this->load->helper("form");
 
 		// form関連設定ファイルのload
@@ -48,10 +48,13 @@ class Edit extends CI_Controller
 
 	function confirm()
 	{
-		var_dump($_POST);
-		// $this->security->csrf_verify();
+		if(empty($_POST))
+		{
+			show_error('The action you have requested is not allowed.');
+		}
 
 		$this->load->helper("code_type");
+
 		if($this->form_validation->run() === TRUE)
 		{
 			// 同一のset_value()を複数回呼び出した場合の対応
@@ -80,6 +83,10 @@ class Edit extends CI_Controller
 
 	function complete()
 	{
+		if(empty($_POST))
+		{
+			show_error('The action you have requested is not allowed.');
+		}
 
 		$this->load->model("snippets_model");
 		// $this->load->database();
