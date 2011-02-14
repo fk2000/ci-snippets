@@ -36,7 +36,7 @@ class Edit extends CI_Controller
 			$this->form_validation->run();
 
 			// code_typeの設定状態を引継ぐ
-			$data["code_type_selected"] = set_value("code_type_options");
+			$data["code_type_selected"] = set_value("code_type");
 		}
 
 		// 各viewを表示
@@ -127,4 +127,4 @@ class Edit extends CI_Controller
 }
 
 /* End of file edit.php */
-/* Location: ./system/application/controllzrs/edit.php */
+/* Location: ./application/controllers/edit.php */
