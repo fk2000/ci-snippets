@@ -5,6 +5,7 @@ class Display extends CI_Controller
 	{
 		parent::__construct();
 		$this->load->model("snippets_model");
+		$this->load->helper("code_type");
 	}
 
 	function index($page = 0)
