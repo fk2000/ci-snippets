@@ -120,7 +120,7 @@ class Edit extends CI_Controller
 		}
 		else
 		{
-			echo "削除に失敗しました。";
+			show_error("Failure: Could not delete this data");
 		}
 	}
 
