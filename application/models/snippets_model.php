@@ -9,7 +9,7 @@ class Snippets_model extends CI_Model
 
 	function Insert($title, $code_type, $code)
 	{
-		if($title === "" || $code_type === "" || $code === "")
+		if(empty($title) || empty($code_type) || empty($code))
 		{
 			return FALSE;
 		}
@@ -23,7 +23,7 @@ class Snippets_model extends CI_Model
 
 	function update($id,$title,$code_type,$code)
 	{
-		if(is_int($id) === FALSE || $title === "" || $code === "" || $code_type === "")
+		if(!is_int($id) || empty($title) || empty($code) || empty($code_type))
 		{
 			return FALSE;
 		}
@@ -60,7 +60,7 @@ class Snippets_model extends CI_Model
 
 	function select($display = 5, $page = 0, $invalid = 0)
 	{
-		if(!is_int($display) || !is_int($invalid))
+		if(!is_int($display) || !is_int($page) || !is_int($invalid))
 		{
 			return NULL;
 		}
@@ -132,6 +132,11 @@ class Snippets_model extends CI_Model
 
 	function get_num_rows($invalid = 0)
 	{
+		if(!is_int($invalid))
+		{
+			return 0;
+		}
+
 		$sql   = "SELECT id FROM " .
 							$this->db->protect_identifiers("snippets", TRUE) .
 							" WHERE
@@ -144,4 +149,4 @@ class Snippets_model extends CI_Model
 }
 
 /* End of file snippets_model.php */
-/* Location: ./system/application/models/snippets_model.php */
+/* Location: /application/models/snippets_model.php */
