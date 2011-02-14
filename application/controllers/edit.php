@@ -24,10 +24,8 @@ class Edit extends CI_Controller
 		//言語選択ドロップダウン情報を取得
 		$data["code_type_options"]  = $this->config->item("code_type_options");
 
-		$referer = (array_key_exists("HTTP_REFERER", $_SERVER)) ? $_SERVER["HTTP_REFERER"]  : "" ;
-
-		// リファラーがconfirmページからのものかで分岐
-		if($referer !== base_url() . "edit/confirm")
+		// confirmページからPOSTデータがない場合
+		if(empty($_POST))
 		{
 			$this->ticket = md5(uniqid(mt_rand(), TRUE));
 			$this->session->set_userdata("ticket", $this->ticket);
