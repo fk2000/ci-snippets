@@ -1,7 +1,8 @@
+<!DOCTYPE html>
 <html lang="ja">
 <head>
 	<meta charset="UTF-8">
-	<title>PageName | SiteName</title>
+	<title>CI-SNIPPETS</title>
 	<meta name="keywords" content="">
 	<meta name="description" content="">
 	<meta name="copyright" content="Yuya Terajima/e2esound.com">

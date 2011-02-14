@@ -60,6 +60,7 @@ class Edit extends CI_Controller
 			exit;
 		}
 
+		$this->load->helper("code_type");
 		if($this->form_validation->run() === TRUE)
 		{
 			// 同一のset_value()を複数回呼び出した場合の対応

@@ -3,7 +3,7 @@
 if(!empty($list)):
 foreach($list as $code):?>
 
-<?php echo anchor("display/code/" . $code["id"], "<h3 class='title " . $code["id"] ."'>[" . code_name($code["code_type"]) . "] " . $code["title"] . "</h3>", $code["title"]);?>
+<?php echo anchor("display/code/" . $code["id"], "<h3 class='title " . $code["id"] ."'>[" . code_name($code["code_type"]) . "] " . $code["title"] . "</h3>");?>
 <?php endforeach;?>
 <!--/#contents--></div>
 <div id="pagination">
