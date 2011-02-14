@@ -60,7 +60,11 @@ class Snippets_model extends CI_Model
 
 	function select($display = 5, $page = 0, $invalid = 0)
 	{
-		if(!is_int($display) || !is_int($page) || !is_int($invalid))
+		if(!is_int($display)
+			|| !is_int($page)
+			|| !is_int($invalid)
+			|| $display < 0
+			|| $page < 0)
 		{
 			return NULL;
 		}
@@ -83,7 +87,7 @@ class Snippets_model extends CI_Model
  */
 		// Active Recordクラスを使用する場合
 		$this->db->select("id, title, code_type, code");
-		$this->db->where("invalid", "0");
+		$this->db->where("invalid", $invalid);
 		$this->db->order_by("updated desc, created desc");
 		$this->db->limit($display, $page);
 
@@ -132,7 +136,7 @@ class Snippets_model extends CI_Model
 
 	function get_num_rows($invalid = 0)
 	{
-		if(!is_int($invalid))
+		if(!is_int($invalid) || $invalid < 0 || $invalid > 1)
 		{
 			return 0;
 		}

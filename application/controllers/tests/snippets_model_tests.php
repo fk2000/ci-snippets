@@ -19,7 +19,7 @@ class Snippets_model_tests extends CI_Controller
 	}
 	function insert()
 	{
-		$desc1 = "通常";
+		$desc1 = "Normal";
 		$test1 = $this->snippets_model->insert($this->data["title"], $this->data["code_type"], $this->data["code"]);
 		$this->unit->run($test1, TRUE, "INSERT", $desc1);
 
@@ -70,8 +70,8 @@ class Snippets_model_tests extends CI_Controller
 
 	function delete()
 	{
-		$desc1 = "通常::id = 10を指定";
-		$test1 = $this->snippets_model->delete(10);
+		$desc1 = "通常::id = を指定";
+		$test1 = $this->snippets_model->delete(93);
 		$this->unit->run($test1, TRUE, "delete", $desc1);
 
 		$desc2 = "idに不正な値(string)を指定";
@@ -91,27 +91,46 @@ class Snippets_model_tests extends CI_Controller
 		$test1 = $this->snippets_model->select();
 		$this->unit->run($test1, "is_array", "SELECT", $desc1);
 
-		$desc2 = "論理削除されているものを表示";
-		$test2 = $this->snippets_model->select(10, 1);
-		$this->unit->run($test2, "is_array", "SELECT", $desc2);
+		$desc2 = "displayがintでない";
+		$test2 = $this->snippets_model->select("hoge", 0, 0);
+		$this->unit->run($test2, "is_null", "SELECT", $desc2);
 
-		$desc3 = "invalidに存在しない値を指定";
-		$test3 = $this->snippets_model->select(5, 3);
-		$this->unit->run($test3, "is_null", "SELCT", $desc3);
+		$desc3 = "pageがintでない";
+		$test3 = $this->snippets_model->select(10, "hoge", 0);
+		$this->unit->run($test3, "is_null", "SELECT", $desc3);
 
-		$desc4 = "引数に不適切な値(string)を設定";
-		$test4 = $this->snippets_model->select("hoge", "fuga");
+		$desc4 = "invalidがintでない";
+		$test4 = $this->snippets_model->select(10, 10, "hoge");
 		$this->unit->run($test4, "is_null", "SELECT", $desc4);
 
-		echo $this->unit->report();
+		$desc5 = "invalidが1";
+		$test5 = $this->snippets_model->select(10, 10, 1);
+		$this->unit->run($test5, "is_null", "SELECT", $desc5);
 
-		var_dump($test2);
+		$desc6 = "invalidが3";
+		$test6 = $this->snippets_model->select(10, 0, 3);
+		$this->unit->run($test6, "is_null", "SELECT", $desc6);
+
+		$desc7 = "invalidが-1";
+		$test7 = $this->snippets_model->select(10, 0, -1);
+		$this->unit->run($test7, "is_null", "SELECT", $desc7);
+
+		$desc8 = "displayがマイナス値";
+		$test8 = $this->snippets_model->select(-10, 0, 0);
+		$this->unit->run($test8, "is_null", "SELECT", $desc8);
+
+		$desc9 = "pageがマイナス値";
+		$test9 = $this->snippets_model->select(10, -10, 0);
+		$this->unit->run($test9, "is_null", "SELECT", $desc9);
+
+
+		echo $this->unit->report();
 	}
 
 	function select_one()
 	{
-		$desc1 = "id=14の場合::通常";
-		$test1 = $this->snippets_model->select_one(14);
+		$desc1 = "id=96の場合::通常";
+		$test1 = $this->snippets_model->select_one(96);
 		$this->unit->run($test1, "is_array", "SELECT_ONE::TEST1", $desc1);
 
 		$desc2 = "idに存在しない値を設定した場合";
@@ -122,7 +141,34 @@ class Snippets_model_tests extends CI_Controller
 		$test3 = $this->snippets_model->select_one("hoge");
 		$this->unit->run($test3, "is_null", "SELECT_ONE::TEST3", $desc3);
 
+		$desc4 = "idにマイナス値";
+		$test4 = $this->snippets_model->select_one(-1);
+		$this->unit->run($test4, "is_null", "SELECT_ONE", $desc4);
+
 		echo $this->unit->report();
+	}
+
+	function get_num_rows()
+	{
+		$desc1 = "通常の場合:invalid=0";
+		$test1 = $this->snippets_model->get_num_rows();
+		$this->unit->run($test1, "is_int", "get_num_rows()", $desc1);
+
+		$desc2 = "通常の場合:invalid=1";
+		$test2 = $this->snippets_model->get_num_rows(1);
+		$this->unit->run($test2, "is_int", "get_num_rows()", $desc2);
+
+		$desc3 = "通常の場合:invalid=-1, return 0";
+		$test3 = $this->snippets_model->get_num_rows(-1);
+		$this->unit->run($test3, 0, "get_num_rows()", $desc3);
+
+		$desc4 = "通常の場合:invalid=5, return 0";
+		$test4 = $this->snippets_model->get_num_rows(5);
+		$this->unit->run($test4, 0, "get_num_rows()", $desc4);
+
+		echo $this->unit->report();
+
+
 	}
 }
 
