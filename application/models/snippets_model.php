@@ -14,7 +14,10 @@ class Snippets_model extends CI_Model
 			return FALSE;
 		}
 
-		$sql = "INSERT INTO sn_snippets(title, code_type, code, created) VALUES(?, ?, ?, NOW())";
+		$sql = "INSERT INTO " .
+						$this->db->protect_identifiers("snippets", TRUE) . "(title, code_type, code, created)
+						VALUES(?, ?, ?, NOW())";
+
 		return $this->db->query($sql, array($title, $code_type, $code));
 	}
 
@@ -25,7 +28,15 @@ class Snippets_model extends CI_Model
 			return FALSE;
 		}
 
-		$sql = "UPDATE sn_snippets SET title = ?, code_type = ?, code = ?, updated = NOW() WHERE id = ?";
+		$sql = "UPDATE " . $this->db->protect_identifiers("snippets", TRUE) .
+					" SET
+							title = ?,
+							code_type = ?,
+							code = ?,
+							updated = NOW()
+						WHERE
+							id = ?";
+
 		return $this->db->query($sql, array($title, $code_type, $code, $id));
 	}
 
@@ -37,7 +48,13 @@ class Snippets_model extends CI_Model
 		}
 
 		//論理削除
-		$sql = "UPDATE sn_snippets SET invalid = 1, updated = NOW() WHERE id = ?";
+		$sql = "UPDATE " . $this->db->protect_identifiers("snippets", TRUE) .
+						" SET
+							invalid = 1,
+							updated = NOW()
+						WHERE
+							id = ?";
+
 		return $this->db->query($sql, $id);
 	}
 
@@ -48,8 +65,29 @@ class Snippets_model extends CI_Model
 			return NULL;
 		}
 
-		$sql = "SELECT id, title, code_type, code FROM sn_snippets WHERE invalid = ? ORDER BY updated DESC,  created DESC LIMIT ?, ?";
+/*
+		$sql = "SELECT
+							id,
+							title,
+							code_type,
+							code
+						FROM " .
+							$this->db->protect_identifiers("snippets", TRUE) .
+							" WHERE
+								invalid = ?
+						ORDER BY
+								updated DESC,  created DESC
+								LIMIT ?, ?";
+
 		$query = $this->db->query($sql, array($invalid, $page, $display));
+ */
+		// Active Recordクラスを使用する場合
+		$this->db->select("id, title, code_type, code");
+		$this->db->where("invalid", "0");
+		$this->db->order_by("updated desc, created desc");
+		$this->db->limit($display, $page);
+
+		$query = $this->db->get("snippets");
 
 		if($query->num_rows() > 0)
 		{
@@ -72,7 +110,15 @@ class Snippets_model extends CI_Model
 			return NULL;
 		}
 
-		$sql = "SELECT title, code_type, code FROM sn_snippets WHERE id=? AND invalid = 0";
+		$sql = "SELECT
+							title,
+							code_type,
+							code
+						FROM " .
+							$this->db->protect_identifiers("snippets", TRUE) .
+						" WHERE
+								id=? AND invalid = 0";
+
 		$query = $this->db->query($sql, array($id));
 
 		if($query->num_rows() > 0){
@@ -86,7 +132,11 @@ class Snippets_model extends CI_Model
 
 	function get_num_rows($invalid = 0)
 	{
-		$sql   = "SELECT id FROM sn_snippets WHERE invalid = ?";
+		$sql   = "SELECT id FROM " .
+							$this->db->protect_identifiers("snippets", TRUE) .
+							" WHERE
+								invalid = ?";
+
 		$count = $this->db->query($sql, array($invalid));
 
 		return $count->num_rows();
