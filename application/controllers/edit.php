@@ -112,6 +112,22 @@ class Edit extends CI_Controller
 
 	}
 
+	function delete()
+	{
+		$this->_ticket_check($this->input->post("ticket"));
+		$this->load->model("snippets_model");
+		$result = $this->snippets_model->delete((int)$this->input->post("id"));
+		if($result === TRUE)
+		{
+			header("HTTP/1.1 301 Moved Permanently");
+			header("Location: " . base_url());
+		}
+		else
+		{
+			echo "削除に失敗しました。";
+		}
+	}
+
 	function _ticket_check($ticket)
 	{
 		if(!isset($ticket) || $ticket !== $this->session->userdata("ticket"))

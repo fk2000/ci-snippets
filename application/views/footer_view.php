@@ -42,7 +42,14 @@ SyntaxHighlighter.autoloader.apply(null, path(
   'vb vbnet               @shBrushVb.js',
   'xml xhtml xslt html    @shBrushXml.js'
 ));
-	SyntaxHighlighter.all();
+SyntaxHighlighter.all();
+function deleteConfirm()
+{
+	if(window.confirm("#<?php echo $this->uri->segment(3);?>を削除しますか？"))
+	{
+		location.href = "<?php echo base_url();?>edit/delete"
+	}
+};
 </script>
 </body>
 </html>

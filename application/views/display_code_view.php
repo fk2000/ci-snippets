@@ -3,5 +3,13 @@
 <pre class="brush: <?php echo $code["code_type"];?>">
 <?php echo $code["code"];?>
 </pre>
+<?php
+echo
+form_open("edit/delete"),
+	form_hidden("id", $this->uri->segment(3)),
+	form_hidden("ticket", $this->ticket),
+	form_submit("deleteCode", "削除", "onclick='deleteConfirm()'"),
+	form_close();
+?>
 </div>
 <!--/#contents--></div>

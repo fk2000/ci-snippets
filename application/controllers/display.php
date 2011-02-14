@@ -27,6 +27,12 @@ class Display extends CI_Controller
 
 	function code($id)
 	{
+		$this->load->library("session");
+		$this->load->helper("form");
+		// 削除用ticketの発行
+		$this->ticket = md5(uniqid(mt_rand(), TRUE));
+		$this->session->set_userdata("ticket", $this->ticket);
+
 		$data["code"] = $this->snippets_model->select_one((int)$id);
 
 		if($data["code"] !== NULL)
