@@ -22,7 +22,7 @@ class Display extends CI_Controller
 */
 
 		$data["list"]  = $this->snippets_model->select(10, (int)$page);
-		$data["pager"] = $this->pagination->create_links();
+		$data["pager"] = ($this->pagination->create_links() === "") ? 1 : $this->pagination->create_links();
 
 		$this->load->view("header_view");
 		$this->load->view('display_view', $data);
