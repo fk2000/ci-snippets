@@ -1,5 +1,5 @@
 <div id="contents">
-<h2><?php echo $title;?></h2>
+<h2><?php echo $message;?></h2>
 <p><?php echo $paragraph;?></p>
 
 <!--/#contents--></div>

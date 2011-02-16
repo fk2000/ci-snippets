@@ -40,8 +40,10 @@ class Display extends CI_Controller
 		$config["per_page"]   = 10;
 		$this->pagination->initialize($config);
 */
-
+		// Modelからデータ取得
 		$data["list"]  = $this->snippets_model->select(10, (int)$page);
+
+		// ページネーションが""を返した場合には常に"1"を表示
 		$data["pager"] = ($this->pagination->create_links() === "") ? 1 : $this->pagination->create_links();
 
 		$this->load->view("header_view");
@@ -63,7 +65,7 @@ class Display extends CI_Controller
 
 		$data["code"] = $this->snippets_model->select_one((int)$id);
 
-		if($data["code"] !== NULL)
+		if(isset($data["code"]))
 		{
 			$this->load->view("header_view");
 			$this->load->view("display_code_view", $data);
