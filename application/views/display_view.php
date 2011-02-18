@@ -4,8 +4,8 @@
 			foreach($list as $code):
 
 				echo anchor("display/code/" . (int)$code["id"],
-											"<h3 class='title " . (int)$code["id"] ."'>[" . code_name($code["code_type"]) . "] " .
-												form_prep($code["title"]) .
+							"<h3 class='title " . (int)$code["id"] ."'>[" . code_name($code["code_type"]) . "] " .
+									form_prep($code["title"]) .
 											"</h3>");
 			endforeach;
 	?>
