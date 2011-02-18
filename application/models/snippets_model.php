@@ -29,7 +29,7 @@ class Snippets_model extends CI_Model
  */
 	function Insert($title, $code_type, $code)
 	{
-		if(empty($title) || empty($code_type) || empty($code))
+		if(empty($title) OR empty($code_type) OR empty($code))
 		{
 			return FALSE;
 		}
@@ -52,7 +52,7 @@ class Snippets_model extends CI_Model
  */
 	function update($id,$title,$code_type,$code)
 	{
-		if(!is_int($id) || empty($title) || empty($code) || empty($code_type))
+		if( ! is_int($id) OR empty($title) OR empty($code) OR empty($code_type))
 		{
 			return FALSE;
 		}
@@ -82,7 +82,7 @@ class Snippets_model extends CI_Model
  */
 	function delete($id)
 	{
-		if(!is_int($id))
+		if( ! is_int($id))
 		{
 			return FALSE;
 		}
@@ -108,11 +108,11 @@ class Snippets_model extends CI_Model
  */
 	function select($display = 5, $page = 0, $invalid = 0)
 	{
-		if(!is_int($display)
-			|| !is_int($page)
-			|| !is_int($invalid)
-			|| $display < 0
-			|| $page < 0)
+		if( ! is_int($display)
+			OR ! is_int($page)
+			OR ! is_int($invalid)
+			OR $display < 0
+			OR $page < 0)
 		{
 			return NULL;
 		}
@@ -179,7 +179,7 @@ class Snippets_model extends CI_Model
 						FROM " .
 							$this->db->protect_identifiers("snippets", TRUE) .
 						" WHERE
-								id=? AND invalid = 0";
+							id=? AND invalid = 0";
 
 		$query = $this->db->query($sql, array($id));
 
@@ -203,7 +203,7 @@ class Snippets_model extends CI_Model
  */
 	function get_num_rows($invalid = 0)
 	{
-		if(!is_int($invalid) || $invalid < 0 || $invalid > 1)
+		if( ! is_int($invalid) OR $invalid < 0 OR $invalid > 1)
 		{
 			return 0;
 		}

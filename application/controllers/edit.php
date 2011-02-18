@@ -6,7 +6,7 @@
  * @package		ci-snippets
  * @author		Yuya Terajima/e2esound.com
  * @copyright	Copyright (c) 2011 Yuya Terajima/e2esound.com
- * @license		MTI License?
+ * @license		MTI License
  * @link		http://www.e2esound.com/
  * @since		Version 0.1β
  */
@@ -18,20 +18,20 @@ class Edit extends CI_Controller
 		parent::__construct();
 
 		// ライブラリ、ヘルパーのload
-		$this->load->library(array("form_validation","security"));
-		$this->load->helper("form");
+		$this->load->library(array("form_validation"));
+		$this->load->helper(array("form", "snippets"));
 
 		// form関連設定ファイルのload
 		$this->config->load("form_data");
 
 		// form_validationのルールを設定
-		$this->form_validation->set_rules("title", "タイトル", "trim|required|xss_clean|strip_tags");
-		$this->form_validation->set_rules("code_type", "言語", "required|xss_clean");
-		$this->form_validation->set_rules("code", "コード", "trim|required");
+		$this->form_validation->set_rules("title", "タイトル", "trim|required|max_length[200]|strip_tags|xss_clean");
+		$this->form_validation->set_rules("code_type", "言語", "required|max_length[20]|callback_code_type_exists");
+		$this->form_validation->set_rules("code", "コード", "trim|required|xss_clean");
 	}
 
 /**
- * Index method
+ * Index action
  * 編集開始ページの表示
  * 確認ページからの修正
  *
@@ -68,7 +68,7 @@ class Edit extends CI_Controller
 	}
 
 /**
- * confirm method
+ * confirm action
  * 入力内容確認ページの表示
  *
  * @package		ci-snippets
@@ -83,7 +83,6 @@ class Edit extends CI_Controller
 			show_error('The action you have requested is not allowed.');
 		}
 
-		$this->load->helper("code_type");
 
 		if($this->form_validation->run() === TRUE)
 		{
@@ -108,7 +107,7 @@ class Edit extends CI_Controller
 	}
 
 /**
- * complete method
+ * complete action
  * 編集完了ページの表示
  * dbへのデータinsert
  *
@@ -128,30 +127,30 @@ class Edit extends CI_Controller
 
 		// insert完了時に成功ページを表示
 		if($this->snippets_model->insert(
-																			$this->input->post("title"),
-																			$this->input->post("code_type"),
-																			str_replace("\r\n\n", "\n", $this->input->post("code"))
-																		))
-		{
-			$data["message"]   = "Edit Completed!!";
-			$data["paragraph"] = "新しいスニペットの登録が完了しました。";
-		}
-		else
-		{
-			$data["message"]   = "Edit Error!!";
-			$data["paragraph"] = "エラーが発生しました。再度登録し直してください。";
-		}
+																				$this->input->post("title"),
+																				$this->input->post("code_type"),
+																				str_replace("\r\n\n", "\n", $this->input->post("code"))
+																			))
+			{
+				$data["message"]   = "Edit Completed!!";
+				$data["paragraph"] = "新しいスニペットの登録が完了しました。";
+			}
+			else
+			{
+				$data["message"]   = "Edit Error!!";
+				$data["paragraph"] = "エラーが発生しました。再度登録し直してください。";
+			}
 
-		// completeページ表示
-		$this->load->view("header_view");
-		$this->load->view("edit_complete_view", $data);
-		$this->load->view("footer_view");
+			// completeページ表示
+			$this->load->view("header_view");
+			$this->load->view("edit_complete_view", $data);
+			$this->load->view("footer_view");
 
 	}
 
 /**
- * delete method
- * スニペット論理削除メソッド
+ * delete action
+ * スニペット論理削アクション
  *
  * @package		ci-snippets
  * @category	Controller
@@ -172,6 +171,35 @@ class Edit extends CI_Controller
 		else
 		{
 			show_error("Failure: Could not delete this data");
+		}
+	}
+
+/**
+ * code_type_exists method
+ * form_validation用の検証メソッド
+ *
+ * @package		ci-snippets
+ * @category	Controller
+ * @author	  Yuya Terajima/e2esound.com
+ */
+	function code_type_exists($type)
+	{
+		if( ! is_string($type))
+		{
+			return FALSE;
+		}
+
+		// 設定ファイルからcode_typeの配列取得
+		$type_list = $this->config->item("code_type_options");
+
+		if(array_key_exists($type, $type_list))
+		{
+			return TRUE;
+		}
+		else
+		{
+			$this->form_validation->set_message('code_type_exists', '指定された %s には対応していません。');
+			return FALSE;
 		}
 	}
 

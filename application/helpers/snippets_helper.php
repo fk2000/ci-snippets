@@ -1,6 +1,6 @@
 <?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 /**
- * ci-snippets  Add helper
+ * ci-snippets　helper
  * 追加ヘルパー
  *
  * @package		ci-snippets
@@ -26,21 +26,22 @@ if( ! function_exists("code_name"))
 {
 	function code_name($type)
 	{
-		if(!is_string($type))
+		if( ! is_string($type))
 		{
 			return NULL;
 		}
-		// CodeIgniterオブジェクト取得
-		$CI =& get_instance();
+
 		// 設定ファイル読込
+		$CI =& get_instance();
 		$CI->config->load("form_data");
 
-		// 設定ファイルからcode_typeの配列取得
-		$type_list = $CI->config->item("code_type_options");
+		// 設定ファイルからcode_typeの配列,デフォルトの言語タイプ取得
+		$type_list  = $CI->config->item("code_type_options");
+		$basic_type = $CI->config->item("code_type_selected");
 
-		return $type_list[$type];
+		return (array_key_exists($type, $type_list)) ? $type_list[$type] : $type_list[$basic_type];
 	}
 }
 
 /* End of file code_type_helper.php */
-/* Location: /application/helpers/code_type.php */
+/* Location: /application/helpers/code_type_helper.php */

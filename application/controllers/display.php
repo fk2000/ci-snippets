@@ -16,12 +16,12 @@ class Display extends CI_Controller
 	function __construct()
 	{
 		parent::__construct();
+		$this->load->helper(array("snippets", "form"));
 		$this->load->model("snippets_model");
-		$this->load->helper("code_type");
 	}
 
 /**
- * Index method
+ * Index action
  * スニペット一覧を表示
  *
  * @package		ci-snippets
@@ -52,7 +52,7 @@ class Display extends CI_Controller
 	}
 
 /**
- * code method
+ * code action
  * スニペット単独ページの表示
  *
  * @package		ci-snippets

@@ -4,11 +4,11 @@ $config['code_type_options'] = array(
 																		"php" => "PHP",
 																		"js"  => "JavaScript",
 																		"ruby" => "Ruby",
-																		"shell" => "shell",
-																		"html" => "html",
-																		"xml" => "xml",
-																		"sql" => "sql",
-																		"css" => "css",
+																		"shell" => "Shell",
+																		"html" => "HTML",
+																		"xml" => "XML",
+																		"sql" => "SQL",
+																		"css" => "CSS",
 																		"perl" => "Perl"
 																	);
 

@@ -1,14 +1,25 @@
 <div id="contents">
-<?php
-if(!empty($list)):
-foreach($list as $code):?>
+	<?php
+		if(	!	empty($list)):
+			foreach($list as $code):
 
-<?php echo anchor("display/code/" . $code["id"], "<h3 class='title " . $code["id"] ."'>[" . code_name($code["code_type"]) . "] " . $code["title"] . "</h3>");?>
-<?php endforeach;?>
+				echo anchor("display/code/" . (int)$code["id"],
+											"<h3 class='title " . (int)$code["id"] ."'>[" . code_name($code["code_type"]) . "] " .
+												form_prep($code["title"]) .
+											"</h3>");
+			endforeach;
+	?>
+
 <!--/#contents--></div>
+
 <div id="pagination">
-<?php echo $pager;?>
-<?php else:?>
-<p>スニペットが登録されていません。</p>
+
+<?php
+		echo $pager;
+		else:
+	?>
+
+	<p>スニペットが登録されていません。</p>
+
 <?php endif;?>
-</div>
+<!--/#pagination--></div>
