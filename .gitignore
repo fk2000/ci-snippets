@@ -1,4 +1,2 @@
 application/logs/*.php
 application/cache/*
-
-system/
