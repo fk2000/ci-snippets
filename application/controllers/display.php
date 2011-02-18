@@ -16,7 +16,7 @@ class Display extends CI_Controller
 	function __construct()
 	{
 		parent::__construct();
-		$this->load->helper(array("snippets", "form"));
+		$this->load->helper(array("snippets", "form", "url"));
 		$this->load->model("snippets_model");
 	}
 

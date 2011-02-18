@@ -19,7 +19,7 @@ class Edit extends CI_Controller
 
 		// ライブラリ、ヘルパーのload
 		$this->load->library(array("form_validation"));
-		$this->load->helper(array("form", "snippets"));
+		$this->load->helper(array("form", "snippets", "url"));
 
 		// form関連設定ファイルのload
 		$this->config->load("form_data");
