@@ -27,7 +27,7 @@ class Edit extends CI_Controller
 		// form_validationのルールを設定
 		$this->form_validation->set_rules("title", "タイトル", "trim|required|max_length[200]|strip_tags|xss_clean");
 		$this->form_validation->set_rules("code_type", "言語", "required|max_length[20]|callback_code_type_exists");
-		$this->form_validation->set_rules("code", "コード", "trim|required|xss_clean");
+		$this->form_validation->set_rules("code", "コード", "trim|required");
 	}
 
 /**
@@ -53,6 +53,7 @@ class Edit extends CI_Controller
 		}
 		else // confirmページからの遷移の場合
 		{
+
 			// form_validationを走らせてset_value()の値を引き継がす
 			$this->form_validation->run();
 
@@ -83,12 +84,12 @@ class Edit extends CI_Controller
 			show_error('The action you have requested is not allowed.');
 		}
 
-
 		if($this->form_validation->run() === TRUE)
 		{
 			$data["title"]     = set_value("title");
-			$data["code"]      = set_value("code");
 			$data["code_type"] = set_value("code_type");
+			$data["code"]      = str_replace("\r\n\n", "\n", set_value("code"));
+
 			// confirmページを表示
 			$this->load->view("header_view");
 			$this->load->view("edit_confirm_view", $data);

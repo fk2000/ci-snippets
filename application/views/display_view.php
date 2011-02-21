@@ -1,6 +1,6 @@
 <div id="contents">
 	<?php
-		if(	!	empty($list)):
+		if( ! empty($list)):
 			foreach($list as $code):
 
 				echo anchor("display/code/" . (int)$code["id"],

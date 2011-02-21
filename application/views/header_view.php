@@ -20,7 +20,7 @@
 			<ul class="clearfix">
 				<li><a href="<?php echo base_url();?>">Top</a></li>
 				<li><a href="<?php echo base_url();?>edit">スニペット追加</a></li>
-				<li>HELP</li>
+				<li><a href="http://twitter.com/terakuma" target="_blank">Twitter</a></li>
 			</ul>
 		<!--/#nav--></div>
 	<!--/#header--></div>
